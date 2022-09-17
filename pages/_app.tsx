@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import RouteGuard from '@common/bridges/RouteGuard';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,8 +24,11 @@ function App({ Component, pageProps }: AppProps) {
         />
         <title>EXERIST</title>
       </Head>
+
       <QueryClientProvider client={queryClient}>
-        <Component {...pageProps} />
+        <RouteGuard>
+          <Component {...pageProps} />
+        </RouteGuard>
       </QueryClientProvider>
     </>
   );
