@@ -16,6 +16,7 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
+      "@firebase": ["firebase"],
       "@common/*": ["common/*"],
       "@specifics/*": ["specifics/*"]
     }
