@@ -1,13 +1,38 @@
-import Link from 'next/link';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import SignFormGroup from '@specifics/auth/components/SignFormGroup';
 import SignTitle from '@specifics/auth/components/SignTitle';
 import SignSwitchGroup from '@specifics/auth/components/SignSwitchGroup';
+import { useSignInWithEmailMutation } from '@specifics/auth/modules/apiHooks/useSignInWithEmailMutation';
+import { firebaseAuth } from '@firebase';
+import { useRouter } from 'next/router';
 
 function SignIn() {
+  const router = useRouter();
+
+  const { mutate } = useSignInWithEmailMutation();
+
   const handleSubmitForm = (email: string, password: string) => {
-    // TODO: 로그인 처리
-    console.log('email:', email, 'password:', password);
+    mutate(
+      { auth: firebaseAuth, email, password },
+      {
+        onSuccess: () => {
+          router.push('/exerist');
+        },
+        onError: (error) => {
+          const errorCode = error.code;
+
+          if (errorCode === 'auth/user-not-found') {
+            alert('존재하지 않는 이메일 입니다.');
+          }
+          if (errorCode === 'auth/wrong-password') {
+            alert('올바른 비밀번호를 입력해 주세요.');
+          }
+          if (errorCode === 'auth/invalid-email') {
+            alert('잘못된 이메일 형식입니다.');
+          }
+        },
+      }
+    );
   };
 
   return (

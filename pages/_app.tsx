@@ -2,6 +2,16 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false, // 데이터가 stale 상태일 경우 윈도우 포커싱 될 때 마다 refetch를 실행하는 옵션
+      retry: 0,
+    },
+  },
+});
 
 function App({ Component, pageProps }: AppProps) {
   return (
@@ -13,8 +23,9 @@ function App({ Component, pageProps }: AppProps) {
         />
         <title>EXERIST</title>
       </Head>
-
-      <Component {...pageProps} />
+      <QueryClientProvider client={queryClient}>
+        <Component {...pageProps} />
+      </QueryClientProvider>
     </>
   );
 }
