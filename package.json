@@ -9,9 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@date-io/dayjs": "^2.15.0",
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
+    "@mui/icons-material": "^5.10.3",
     "@mui/material": "^5.10.2",
+    "@mui/x-date-pickers": "^5.0.2",
     "@tanstack/react-query": "^4.3.4",
     "axios": "^0.27.2",
     "dayjs": "^1.11.5",
