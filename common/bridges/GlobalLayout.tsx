@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import { colorTheme } from '@styles/theme';
 import GlobalHeader from './GlobalHeader';
 
 interface Props {
@@ -12,7 +13,7 @@ function GlobalLayout({ children, isShowHeader = false }: Props) {
       width="100%"
       display="flex"
       justifyContent="center"
-      style={{ backgroundColor: '#F4F8FB' }}
+      style={{ backgroundColor: colorTheme.white }}
       minHeight="100vh"
     >
       <Box maxWidth="1440px" width="100%">

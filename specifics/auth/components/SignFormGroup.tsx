@@ -1,5 +1,6 @@
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { ChangeEvent, useState } from 'react';
+import { colorTheme } from '@styles/theme';
 
 interface Props {
   handleSubmitForm: (email: string, password: string) => void;
@@ -42,7 +43,7 @@ function SignFormGroup({ handleSubmitForm, buttonText }: Props) {
         fullWidth
         variant="contained"
         onClick={handleClick}
-        style={{ backgroundColor: '#21D4B9', padding: '10px 0' }}
+        style={{ backgroundColor: colorTheme.main, padding: '10px 0' }}
       >
         <Typography color="#F4F8FB">{buttonText}</Typography>
       </Button>

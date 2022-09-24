@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Box, Typography } from '@mui/material';
+import { colorTheme } from '@styles/theme';
 
 interface SignSwitchGroupProps {
   guideText: string;
@@ -20,13 +21,13 @@ function SignSwitchGroup({
       alignItems="center"
       gap={1}
     >
-      <Typography color="#3b9ae1" variant="caption">
+      <Typography color={colorTheme.main} variant="caption">
         {guideText}
       </Typography>
       <Link href={href}>
         <Typography
           variant="caption"
-          color="#3b9ae1"
+          color={colorTheme.main}
           fontWeight="bold"
           style={{ cursor: 'pointer' }}
         >
