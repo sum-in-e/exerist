@@ -10,14 +10,18 @@ import { colorTheme } from '@styles/theme';
 import { ChangeEvent, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveAndCancelButtonGroup from '@specifics/exerist/components/SaveAndCancelButtonGroup';
+import { useUpdateDailyLogMemoByDocIdMutation } from '@specifics/exerist/modules/apiHooks/useUpdateDailyLogMemoByDocIdMutation';
 
 interface DailyLogMemoProps {
+  date: string;
   initMemo: string;
 }
 
-function DailyLogMemo({ initMemo }: DailyLogMemoProps) {
+function DailyLogMemo({ date, initMemo }: DailyLogMemoProps) {
   const [memo, setMemo] = useState(initMemo);
   const [isEditable, setIsEditable] = useState(false);
+
+  const { mutate } = useUpdateDailyLogMemoByDocIdMutation();
 
   const handleChangeMemo = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setMemo(event.target.value);
@@ -28,11 +32,13 @@ function DailyLogMemo({ initMemo }: DailyLogMemoProps) {
   };
 
   const handleUpdateMemo = () => {
-    // TODO: 편집 mutate
+    mutate({ docId: date, memo });
   };
 
   const handleClickSave = () => {
-    handleUpdateMemo();
+    if (initMemo !== memo) {
+      handleUpdateMemo();
+    }
     setIsEditable(false);
   };
 
@@ -61,6 +67,7 @@ function DailyLogMemo({ initMemo }: DailyLogMemoProps) {
       <Divider style={{ margin: '10px 0 15px 0' }} />
       {isEditable ? (
         <Box>
+          {/* TODO: TextArea를 여기랑 WorkoutLogItem에서 똑같이 쓰는데 이부분 공통화 가능 */}
           <TextareaAutosize
             minRows={4}
             maxRows={6}

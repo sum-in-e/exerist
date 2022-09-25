@@ -42,14 +42,31 @@ const updateWorkoutLogsByDocId = async (
 
   const docRef = doc(firebaseDB, 'dailyLog', docId);
   const docSnap = await updateDoc(docRef, { workoutLogs: workoutLogsData });
-
   return docSnap;
 };
 
 // -------------------
-// TODO: 위랑 같이해서 메모 편집하는 API도 추가
+
+export interface UpdateDailyLogMemoByDocIdParams {
+  docId: string;
+  memo: string;
+}
+
+/**
+ * @remarks docId에 해당하는 DailyLog에서 memo를 업데이트하는 API 입니다.
+ */
+const updateDailyLogMemoByDocId = async (
+  params: UpdateDailyLogMemoByDocIdParams
+) => {
+  const { docId, memo } = params;
+
+  const docRef = doc(firebaseDB, 'dailyLog', docId);
+  const docSnap = await updateDoc(docRef, { memo });
+  return docSnap;
+};
 
 export default {
   getDailyLogByDocId,
   updateWorkoutLogsByDocId,
+  updateDailyLogMemoByDocId,
 };

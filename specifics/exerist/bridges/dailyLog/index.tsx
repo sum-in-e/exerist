@@ -20,7 +20,7 @@ function DailyLog({ date }: DailyLogProps) {
   return (
     <Box>
       {/* dailyLog memo */}
-      {data && <DailyLogMemo initMemo={data.memo} />}
+      {data && <DailyLogMemo date={date} initMemo={data.memo} />}
 
       {/* workoutLogs */}
       {data ? (
