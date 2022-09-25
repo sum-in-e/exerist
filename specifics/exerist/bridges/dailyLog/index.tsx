@@ -9,6 +9,7 @@ interface DailyLogProps {
 }
 
 function DailyLog({ date }: DailyLogProps) {
+  // isLoding이면 data: undefined임
   const { data, isLoading } = useGetDailyLogByDocIdQuery({
     docId: date,
   });
@@ -20,15 +21,15 @@ function DailyLog({ date }: DailyLogProps) {
   return (
     <Box>
       {/* dailyLog memo */}
-      {data && <DailyLogMemo date={date} initMemo={data.memo} />}
+      {!isLoading && <DailyLogMemo date={date} initMemo={data?.memo} />}
 
       {/* workoutLogs */}
-      {data ? (
-        <Box>
-          <WorkoutLogs date={date} workoutLogs={data.workoutLogs} />
-        </Box>
-      ) : (
-        !isLoading && (
+      {!isLoading &&
+        (data?.workoutLogs ? (
+          <Box>
+            <WorkoutLogs date={date} workoutLogs={data.workoutLogs} />
+          </Box>
+        ) : (
           <Box
             textAlign="center"
             style={{ background: colorTheme.secondary }}
@@ -39,8 +40,7 @@ function DailyLog({ date }: DailyLogProps) {
               기록이 없습니다.
             </Typography>
           </Box>
-        )
-      )}
+        ))}
 
       {/* 운동 추가 버튼 */}
       <Box mt={2}>
