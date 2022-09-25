@@ -1,19 +1,17 @@
-import { firebaseAuth } from '@firebase';
-import { Box, Typography, Table, Chip, Button } from '@mui/material';
-import { signOut } from 'firebase/auth';
+import { Box, Button } from '@mui/material';
+import Calendar from '@specifics/exerist/bridges/Calendar';
+import DailyLog from '@specifics/exerist/bridges/DailyLog';
+import { useRouter } from 'next/router';
 
 function Exerist() {
-  const handleSignOut = () => {
-    signOut(firebaseAuth);
-  };
+  const router = useRouter();
+  const { date } = router.query;
+  const currentDate = date as string;
 
   return (
     <Box>
-      <Typography>캘린더 영역</Typography>
-      <Box>
-        <Typography>리스트 영역</Typography>
-        <Button onClick={handleSignOut}>테스트용 로그아웃 버튼</Button>
-      </Box>
+      <Calendar />
+      {currentDate && <DailyLog date={currentDate} />}
     </Box>
   );
 }
