@@ -80,12 +80,17 @@ function WorkoutLogItem({
       memo: currentMemo,
     });
 
-    updateWorkoutLogsMutate({
-      docId: date,
-      workoutLogsData: copiedWorkoutLogs,
-    });
-
-    refetch();
+    updateWorkoutLogsMutate(
+      {
+        docId: date,
+        workoutLogsData: copiedWorkoutLogs,
+      },
+      {
+        onSuccess: () => {
+          refetch();
+        },
+      }
+    );
   };
 
   const handleClickSave = () => {
