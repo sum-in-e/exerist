@@ -1,6 +1,6 @@
 import { Box, Button } from '@mui/material';
 import Calendar from '@specifics/exerist/bridges/Calendar';
-import DailyLog from '@specifics/exerist/bridges/DailyLog';
+import DailyLog from '@specifics/exerist/bridges/dailyLog';
 import { useRouter } from 'next/router';
 
 function Exerist() {
