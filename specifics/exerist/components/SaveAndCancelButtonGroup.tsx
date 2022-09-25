@@ -14,18 +14,6 @@ function SaveAndCancelButtonGroup({
     <Box display="flex" gap={1} width="100%">
       <Button
         size="small"
-        variant="contained"
-        style={{
-          width: '50%',
-          background: colorTheme.signature,
-          fontWeight: 'bold',
-        }}
-        onClick={handleClickSave}
-      >
-        저장
-      </Button>
-      <Button
-        size="small"
         variant="outlined"
         style={{
           width: '50%',
@@ -36,6 +24,18 @@ function SaveAndCancelButtonGroup({
         onClick={handleClickCancel}
       >
         취소
+      </Button>
+      <Button
+        size="small"
+        variant="contained"
+        style={{
+          width: '50%',
+          background: colorTheme.signature,
+          fontWeight: 'bold',
+        }}
+        onClick={handleClickSave}
+      >
+        저장
       </Button>
     </Box>
   );
