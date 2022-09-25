@@ -24,15 +24,17 @@ function Calendar() {
     const currentDate = date as string;
     const today = dayjs().format('YYYY-MM-DD');
 
-    if (!currentDate) {
-      router.push({
-        pathname: '/exerist',
-        query: { date: today },
-      });
-      return;
-    }
+    if (router.isReady) {
+      if (!currentDate) {
+        router.push({
+          pathname: '/exerist',
+          query: { date: today },
+        });
+        return;
+      }
 
-    setSelectedDate(currentDate || today);
+      setSelectedDate(currentDate);
+    }
   }, [router]);
 
   return (
