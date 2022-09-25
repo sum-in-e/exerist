@@ -4,6 +4,7 @@ import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import RouteGuard from '@common/bridges/RouteGuard';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,7 +28,9 @@ function App({ Component, pageProps }: AppProps) {
 
       <QueryClientProvider client={queryClient}>
         <RouteGuard>
-          <Component {...pageProps} />
+          <Router>
+            <Component {...pageProps} />
+          </Router>
         </RouteGuard>
       </QueryClientProvider>
     </>
