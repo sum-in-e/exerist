@@ -1,7 +1,7 @@
 import { DailyLog } from '@common/types/dailyLogType';
 import { WorkoutLog } from '@common/types/workoutLogType';
 import { firebaseDB } from '@firebase';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 
 // -------------------
 
@@ -42,14 +42,39 @@ const updateWorkoutLogsByDocId = async (
 
   const docRef = doc(firebaseDB, 'dailyLog', docId);
   const docSnap = await updateDoc(docRef, { workoutLogs: workoutLogsData });
-
   return docSnap;
 };
 
 // -------------------
-// TODO: 위랑 같이해서 메모 편집하는 API도 추가
+
+export interface SetDailyLogMemoByDocIdParams {
+  docId: string;
+  memo: string;
+}
+
+/**
+ * @remarks docId에 해당하는 DailyLog에서 memo를 업데이트하는 API 입니다.
+ * @memo updateDoc은 특정 필드만 업데이트 가능 /  setDoc은 doc 자체를 덮어씌움
+ */
+const setDailyLogMemoByDocId = async (params: SetDailyLogMemoByDocIdParams) => {
+  const { docId, memo } = params;
+
+  const docRef = doc(firebaseDB, 'dailyLog', docId);
+  const getDocById = await getDoc(docRef);
+
+  if (getDocById.exists()) {
+    // 해당 날짜의 doc이 이미 있으니 updateDoc
+    const docSnap = await updateDoc(docRef, { memo });
+    return docSnap;
+  } else {
+    // 해당 날짜의 doc이 없으니 setDoc으로 doc 생성과 동시에 내부에 Memo까지 생성
+    const docSnap = await setDoc(docRef, { memo });
+    return docSnap;
+  }
+};
 
 export default {
   getDailyLogByDocId,
   updateWorkoutLogsByDocId,
+  setDailyLogMemoByDocId,
 };

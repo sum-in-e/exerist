@@ -16,6 +16,7 @@ import { colorTheme } from '@styles/theme';
 import { WorkoutLog } from '@common/types/workoutLogType';
 import { useUpdateWorkoutLogsByDocIdMutation } from '@specifics/exerist/modules/apiHooks/useUpdateWorkoutLogsByDocIdMutation';
 import { useGetDailyLogByDocIdQuery } from '@specifics/exerist/modules/apiHooks/useGetDailyLogByDocIdQuery';
+import SaveAndCancelButtonGroup from '@specifics/exerist/components/SaveAndCancelButtonGroup';
 
 interface WorkoutLogItemProps {
   date: string;
@@ -79,12 +80,17 @@ function WorkoutLogItem({
       memo: currentMemo,
     });
 
-    updateWorkoutLogsMutate({
-      docId: date,
-      workoutLogsData: copiedWorkoutLogs,
-    });
-
-    refetch();
+    updateWorkoutLogsMutate(
+      {
+        docId: date,
+        workoutLogsData: copiedWorkoutLogs,
+      },
+      {
+        onSuccess: () => {
+          refetch();
+        },
+      }
+    );
   };
 
   const handleClickSave = () => {
@@ -181,26 +187,10 @@ function WorkoutLogItem({
 
       {isEditable && (
         <CardActions style={{ padding: '0 16px 16px 16px' }}>
-          <Button
-            size="small"
-            variant="contained"
-            style={{ width: '50%', background: colorTheme.signature }}
-            onClick={handleClickSave}
-          >
-            저장
-          </Button>
-          <Button
-            size="small"
-            variant="outlined"
-            style={{
-              width: '50%',
-              color: colorTheme.signature,
-              border: `${colorTheme.signature} 1px solid`,
-            }}
-            onClick={handleClickCancel}
-          >
-            취소
-          </Button>
+          <SaveAndCancelButtonGroup
+            handleClickSave={handleClickSave}
+            handleClickCancel={handleClickCancel}
+          />
         </CardActions>
       )}
     </Card>
