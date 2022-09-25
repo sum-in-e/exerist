@@ -3,7 +3,7 @@ import Exerist from '@specifics/exerist/bridges';
 
 function ExeristPage() {
   return (
-    <GlobalLayout>
+    <GlobalLayout isShowHeader>
       <Exerist />
     </GlobalLayout>
   );
