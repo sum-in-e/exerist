@@ -17,6 +17,7 @@ import { WorkoutLog } from '@common/types/workoutLogType';
 import { useUpdateWorkoutLogsByDocIdMutation } from '@specifics/exerist/modules/apiHooks/useUpdateWorkoutLogsByDocIdMutation';
 import { useGetDailyLogByDocIdQuery } from '@specifics/exerist/modules/apiHooks/useGetDailyLogByDocIdQuery';
 import SaveAndCancelButtonGroup from '@specifics/exerist/components/SaveAndCancelButtonGroup';
+import { useDeleteWorkoutLogsByDocIdMutation } from '@specifics/exerist/modules/apiHooks/useDeleteWorkoutLogsByDocIdMutation';
 
 interface WorkoutLogItemProps {
   date: string;
@@ -45,6 +46,9 @@ function WorkoutLogItem({
   const { mutate: updateWorkoutLogsMutate } =
     useUpdateWorkoutLogsByDocIdMutation();
 
+  const { mutate: deleteWorkoutLogsMutate } =
+    useDeleteWorkoutLogsByDocIdMutation();
+
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -59,8 +63,27 @@ function WorkoutLogItem({
   };
 
   const handleClickDelete = () => {
-    // TODO: confirm 받기
-    // TODO: 삭제 mutation
+    if (window.confirm('해당 기록을 삭제하시겠습니까?')) {
+      const copiedWorkoutLogs = [...workoutLogs];
+      const seletedLogIndex = copiedWorkoutLogs.findIndex(
+        (log) => log.id === id
+      );
+
+      copiedWorkoutLogs.splice(seletedLogIndex, 1);
+
+      deleteWorkoutLogsMutate(
+        {
+          docId: date,
+          workoutLogsData: copiedWorkoutLogs,
+        },
+        {
+          onSuccess: () => {
+            alert('삭제되었습니다.');
+            refetch();
+          },
+        }
+      );
+    }
     handleCloseMenu();
   };
 
