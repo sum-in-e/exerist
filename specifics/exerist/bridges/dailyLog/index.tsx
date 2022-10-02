@@ -3,19 +3,27 @@ import { useGetDailyLogByDocIdQuery } from '@specifics/exerist/modules/apiHooks/
 import WorkoutLogs from '@specifics/exerist/bridges/workoutLogs';
 import { colorTheme } from '@styles/theme';
 import DailyLogMemo from './dailyLogMemo';
+import CreateWorkoutLogDialog from '../workoutLogs/CreateWorkoutLogDialog';
+import { useState } from 'react';
 
 interface DailyLogProps {
   date: string;
 }
 
 function DailyLog({ date }: DailyLogProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleCloseDialog = () => {
+    setIsOpen(false);
+  };
+
   // isLoding이면 data: undefined임
   const { data, isLoading } = useGetDailyLogByDocIdQuery({
     docId: date,
   });
 
   const handleClickAdd = () => {
-    //TODO: 운동 추가
+    setIsOpen(true);
   };
 
   return (
@@ -54,6 +62,9 @@ function DailyLog({ date }: DailyLogProps) {
           운동 추가하기
         </Button>
       </Box>
+
+      {/* 운동 추가 다이얼로그 */}
+      <CreateWorkoutLogDialog isOpen={isOpen} handleClose={handleCloseDialog} />
     </Box>
   );
 }
