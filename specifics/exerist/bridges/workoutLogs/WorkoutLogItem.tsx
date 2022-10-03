@@ -193,7 +193,7 @@ function WorkoutLogItem({
               placeholder="내용을 입력해 주세요."
               value={currentMemo}
               onChange={handleChangeMemo}
-              style={{ width: '100%' }}
+              style={{ width: '100%', fontSize: '16px' }}
             />
           ) : (
             <Typography
