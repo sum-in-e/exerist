@@ -33,7 +33,7 @@ function DailyLog({ date }: DailyLogProps) {
 
       {/* workoutLogs */}
       {!isLoading &&
-        (data?.workoutLogs ? (
+        (data?.workoutLogs && data?.workoutLogs.length !== 0 ? (
           <Box>
             <WorkoutLogs date={date} workoutLogs={data.workoutLogs} />
           </Box>
@@ -68,6 +68,8 @@ function DailyLog({ date }: DailyLogProps) {
         <CreateWorkoutLogDialog
           isOpen={isOpen}
           handleClose={handleCloseDialog}
+          date={date}
+          workoutLogs={data?.workoutLogs || []}
         />
       )}
     </Box>
