@@ -9,21 +9,38 @@ import {
   SelectChangeEvent,
   Typography,
 } from '@mui/material';
+import { v4 as uuid } from 'uuid';
+import dayjs from 'dayjs';
 import { muscleGroups } from '@common/constants/exerist';
-import { MuscleGroups } from '@common/types/workoutLogType';
+import { MuscleGroups, WorkoutLog } from '@common/types/workoutLogType';
 import { workoutListAll } from '@common/constants/workout';
 import SaveAndCancelButtonGroup from '@specifics/exerist/components/SaveAndCancelButtonGroup';
+import { useGetDailyLogByDocIdQuery } from '@specifics/exerist/modules/apiHooks/useGetDailyLogByDocIdQuery';
+import { useCreateWorkoutLogsByDocIdMutation } from '@specifics/exerist/modules/apiHooks/useCreateWorkoutLogsByDocIdMutation copy';
 
 interface CreateWorkoutLogDialogProps {
   isOpen: boolean;
   handleClose: () => void;
+  date: string;
+  workoutLogs: WorkoutLog[];
 }
 
 function CreateWorkoutLogDialog({
   isOpen,
   handleClose,
+  date,
+  workoutLogs,
 }: CreateWorkoutLogDialogProps) {
   // 여기서 id, group, name 최종 관리 해야 함. 그래야 액션으로 저장 간,ㅇ
+
+  const { refetch: refetchDailyLog } = useGetDailyLogByDocIdQuery(
+    {
+      docId: date,
+    },
+    { enabled: false }
+  );
+
+  const { mutate } = useCreateWorkoutLogsByDocIdMutation();
 
   const [selectedMuscleGroup, setSelectedMuscleGroup] = useState<MuscleGroups>(
     muscleGroups[0]
@@ -45,10 +62,25 @@ function CreateWorkoutLogDialog({
   };
 
   const handleClickAdd = () => {
-    console.log(selectedMuscleGroup, selectedWorkout);
-    // 추가 시 액션
-    // 추가 onSuccess 시 닫기
-    // handleClose();
+    const newWorkoutLog = {
+      id: `${dayjs()}_${uuid()}`,
+      group: selectedMuscleGroup,
+      name: selectedWorkout,
+      memo: '',
+    };
+
+    const copiedWorkoutLogs = [...workoutLogs];
+    copiedWorkoutLogs.push(newWorkoutLog);
+
+    mutate(
+      { docId: date, workoutLogsData: copiedWorkoutLogs },
+      {
+        onSuccess: () => {
+          refetchDailyLog();
+          handleClose();
+        },
+      }
+    );
   };
 
   const handleClickCancel = () => {
