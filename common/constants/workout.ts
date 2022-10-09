@@ -1,5 +1,3 @@
-// TODO: 타입에서 추출할 수 있도록 만들어도 좋을 것 같다. 회사에서 정의했던 타입 참고.
-
 export const workoutListAll = {
   Chest: [
     '벤치프레스',
