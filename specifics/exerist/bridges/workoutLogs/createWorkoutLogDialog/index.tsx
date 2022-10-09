@@ -123,19 +123,19 @@ function CreateWorkoutLogDialog({
         </Box>
 
         {/* Workout Select */}
-        {/* TODO: Select Items가 select 아래로 위치하도록 하기 */}
         <Box mb={1} display="flex" alignItems="center" gap={1}>
           <Box width="15%">
             <Typography variant="body2" fontWeight="bold">
               종목
             </Typography>
           </Box>
-          <Box width="85%">
+          <Box width="80%">
             <Select
               value={selectedWorkout}
               onChange={handleChangeWorkout}
-              fullWidth
               size="small"
+              fullWidth
+              sx={{ maxWidth: '100%' }}
             >
               {workoutListByMuscleGroup.map((workout: any, index: any) => (
                 <MenuItem key={`${workout}_${index}`} value={workout}>
@@ -147,6 +147,7 @@ function CreateWorkoutLogDialog({
         </Box>
       </DialogContent>
 
+      {/* Dialog Actions */}
       <Box p="0 24px 20px 24px" width="100%">
         <SaveAndCancelButtonGroup
           handleClickSave={handleClickAdd}

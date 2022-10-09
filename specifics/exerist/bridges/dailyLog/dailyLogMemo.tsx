@@ -12,7 +12,6 @@ interface DailyLogMemoProps {
 
 function DailyLogMemo({ date, initMemo = '' }: DailyLogMemoProps) {
   const [memo, setMemo] = useState(initMemo);
-  console.log('initMemo:', initMemo, 'memo:', memo);
   const [isEditable, setIsEditable] = useState(false);
 
   const { mutate } = useSetDailyLogMemoByDocIdMutation();
