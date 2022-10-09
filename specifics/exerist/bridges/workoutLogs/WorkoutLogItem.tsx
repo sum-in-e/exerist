@@ -18,6 +18,7 @@ import { useUpdateWorkoutLogsByDocIdMutation } from '@specifics/exerist/modules/
 import { useGetDailyLogByDocIdQuery } from '@specifics/exerist/modules/apiHooks/useGetDailyLogByDocIdQuery';
 import SaveAndCancelButtonGroup from '@specifics/exerist/components/SaveAndCancelButtonGroup';
 import { useDeleteWorkoutLogsByDocIdMutation } from '@specifics/exerist/modules/apiHooks/useDeleteWorkoutLogsByDocIdMutation';
+import SetWorkoutDialog from '../SetWorkoutDialog';
 
 interface WorkoutLogItemProps {
   date: string;
@@ -35,6 +36,11 @@ function WorkoutLogItem({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [currentMemo, setCurrentMemo] = useState(memo);
+  const [isOpenDialog, setIsOpenDialog] = useState(false);
+
+  const handleCloseDialog = () => {
+    setIsOpenDialog(false);
+  };
 
   const { refetch } = useGetDailyLogByDocIdQuery(
     {
@@ -49,53 +55,33 @@ function WorkoutLogItem({
   const { mutate: deleteWorkoutLogsMutate } =
     useDeleteWorkoutLogsByDocIdMutation();
 
-  const handleClick = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const handleDeleteWorkout = () => {
+    const copiedWorkoutLogs = [...workoutLogs];
+    const seletedLogIndex = copiedWorkoutLogs.findIndex((log) => log.id === id);
 
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
-  };
+    copiedWorkoutLogs.splice(seletedLogIndex, 1);
 
-  const handleClickEdit = () => {
-    setIsEditable(true);
-    handleCloseMenu();
-  };
-
-  const handleClickDelete = () => {
-    if (window.confirm('해당 기록을 삭제하시겠습니까?')) {
-      const copiedWorkoutLogs = [...workoutLogs];
-      const seletedLogIndex = copiedWorkoutLogs.findIndex(
-        (log) => log.id === id
-      );
-
-      copiedWorkoutLogs.splice(seletedLogIndex, 1);
-
-      deleteWorkoutLogsMutate(
-        {
-          docId: date,
-          workoutLogsData: copiedWorkoutLogs,
+    deleteWorkoutLogsMutate(
+      {
+        docId: date,
+        workoutLogsData: copiedWorkoutLogs,
+      },
+      {
+        onSuccess: () => {
+          alert('삭제되었습니다.');
+          refetch();
         },
-        {
-          onSuccess: () => {
-            alert('삭제되었습니다.');
-            refetch();
-          },
-        }
-      );
-    }
-    handleCloseMenu();
+      }
+    );
   };
 
-  /**
-   * @remarks 기존 workoutLogs에서 바뀐 부분을 교체하여 update하는 함수입니다.
-   */
   const handleUpdateMemo = () => {
     const copiedWorkoutLogs = [...workoutLogs];
     const modifiedLogIndex = copiedWorkoutLogs.findIndex(
       (log) => log.id === id
     );
 
+    // TODO: modifiedLogIndex가 예외상황으로 없다거나 할 경우에 대한 처리는 안 해놨네.. 해야겠다; 무조건 있다고 가정하고 해버림. 다른곳도 검토
     copiedWorkoutLogs.splice(modifiedLogIndex, 1, {
       id,
       group,
@@ -114,6 +100,31 @@ function WorkoutLogItem({
         },
       }
     );
+  };
+
+  const handleClickMenu = (event: MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
+  const handleClickEdit = () => {
+    setIsEditable(true);
+    handleCloseMenu();
+  };
+
+  const handleClickChangeWorkout = () => {
+    setIsOpenDialog(true);
+    handleCloseMenu();
+  };
+
+  const handleClickDelete = () => {
+    if (window.confirm('해당 기록을 삭제하시겠습니까?')) {
+      handleDeleteWorkout();
+    }
+    handleCloseMenu();
   };
 
   const handleClickSave = () => {
@@ -148,7 +159,7 @@ function WorkoutLogItem({
               {group}
             </Typography>
             <Typography variant="h6" fontWeight="bold" color={colorTheme.main}>
-              {name}
+              {`${name}`}
             </Typography>
           </Box>
           <Box>
@@ -158,7 +169,7 @@ function WorkoutLogItem({
               aria-controls={open ? 'long-menu' : undefined}
               aria-expanded={open ? 'true' : undefined}
               aria-haspopup="true"
-              onClick={handleClick}
+              onClick={handleClickMenu}
               style={{ padding: 0 }}
             >
               <MoreVertIcon fontSize="small" style={{ color: 'grey' }} />
@@ -174,11 +185,12 @@ function WorkoutLogItem({
               aria-labelledby="composition-button"
               PaperProps={{
                 style: {
-                  width: '80px',
+                  width: '100px',
                 },
               }}
             >
               <MenuItem onClick={handleClickEdit}>수정</MenuItem>
+              <MenuItem onClick={handleClickChangeWorkout}>종목 변경</MenuItem>
               <MenuItem onClick={handleClickDelete}>삭제</MenuItem>
             </Menu>
           </Box>
@@ -215,6 +227,21 @@ function WorkoutLogItem({
             handleClickCancel={handleClickCancel}
           />
         </CardActions>
+      )}
+
+      {/* 운동 종목 변경 다이얼로그 */}
+      {isOpenDialog && (
+        <SetWorkoutDialog
+          type="changeWorkout"
+          title="운동 변경"
+          id={workoutLog.id}
+          initMuscleGroup={workoutLog.group}
+          initSelectedWorkout={workoutLog.name}
+          isOpen={isOpenDialog}
+          handleClose={handleCloseDialog}
+          date={date}
+          workoutLogs={workoutLogs}
+        />
       )}
     </Card>
   );

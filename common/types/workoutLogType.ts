@@ -1,7 +1,9 @@
+import { WorkoutListAll } from './workoutType';
+
 export interface WorkoutLog {
   id: string;
   group: MuscleGroups;
-  name: string;
+  name: WorkoutListAll;
   memo: string;
 }
 

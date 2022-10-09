@@ -34,7 +34,7 @@ export interface UpdateWorkoutLogsByDocIdParams {
 /**
  * @remarks docId에 해당하는 DailyLog에서 workoutLogs를 업데이트하는 API
  * @memo workoutLogs 내의 각 log 수정, 삭제 시 이 API를 사용합니다. 대신 각 기능별로 API를 호출하는 mutation을 별도 분리하였다.
- * 수정, 삭제의 경우는 이미 firestore DB에 해당 doc이 존재해야 UI가 보여지고 해당 액션이 가능하기 때문에 updateDoc으로만 처리한다.
+ * 수정, 삭제의 경우는 이미 firestore DB에 해당 doc이 존재해야 workout UI가 보여지고 수정, 삭제 액션이 가능하기 때문에 updateDoc으로만 처리한다.
  */
 const updateWorkoutLogsByDocId = async (
   params: UpdateWorkoutLogsByDocIdParams
