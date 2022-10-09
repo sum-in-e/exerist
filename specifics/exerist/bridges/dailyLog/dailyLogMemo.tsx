@@ -3,18 +3,22 @@ import { colorTheme } from '@styles/theme';
 import { ChangeEvent, useEffect, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveAndCancelButtonGroup from '@specifics/exerist/components/SaveAndCancelButtonGroup';
-import { useSetDailyLogMemoByDocIdMutation } from '@specifics/exerist/modules/apiHooks/useSetDailyLogMemoByDocIdMutation';
+import { useSetDailyMemoByDocIdMutation } from '@common/modules/apiHooks/useSetDailyMemoByDocIdMutation';
+import { useGetDailyMemoByDocIdQuery } from '@common/modules/apiHooks/useGetDailyMemoByDocIdQuery';
 
 interface DailyLogMemoProps {
   date: string;
-  initMemo?: string;
 }
 
-function DailyLogMemo({ date, initMemo = '' }: DailyLogMemoProps) {
-  const [memo, setMemo] = useState(initMemo);
-  const [isEditable, setIsEditable] = useState(false);
+function DailyLogMemo({ date }: DailyLogMemoProps) {
+  const { data, refetch } = useGetDailyMemoByDocIdQuery({
+    docId: date,
+  });
 
-  const { mutate } = useSetDailyLogMemoByDocIdMutation();
+  const { mutate } = useSetDailyMemoByDocIdMutation();
+
+  const [memo, setMemo] = useState(data?.memo || '');
+  const [isEditable, setIsEditable] = useState(false);
 
   const handleChangeMemo = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setMemo(event.target.value);
@@ -25,24 +29,31 @@ function DailyLogMemo({ date, initMemo = '' }: DailyLogMemoProps) {
   };
 
   const handleUpdateMemo = () => {
-    mutate({ docId: date, memo });
+    mutate(
+      { docId: date, memo },
+      {
+        onSuccess: () => {
+          refetch();
+        },
+      }
+    );
   };
 
   const handleClickSave = () => {
-    if (initMemo !== memo) {
+    if (data?.memo !== memo) {
       handleUpdateMemo();
     }
     setIsEditable(false);
   };
 
   const handleClickCancel = () => {
-    setMemo(initMemo);
+    setMemo(data?.memo);
     setIsEditable(false);
   };
 
   useEffect(() => {
-    setMemo(initMemo);
-  }, [initMemo]);
+    setMemo(data?.memo);
+  }, [data]);
 
   return (
     <Box
