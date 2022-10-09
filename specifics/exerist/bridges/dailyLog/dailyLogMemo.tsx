@@ -3,7 +3,7 @@ import { colorTheme } from '@styles/theme';
 import { ChangeEvent, useEffect, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveAndCancelButtonGroup from '@specifics/exerist/components/SaveAndCancelButtonGroup';
-import { useSetDailyLogMemoByDocIdMutation } from '@specifics/exerist/modules/apiHooks/useSetDailyLogMemoByDocIdMutation';
+import { useSetDailyMemoByDocIdMutation } from '@common/modules/apiHooks/useSetDailyMemoByDocIdMutation';
 
 interface DailyLogMemoProps {
   date: string;
@@ -14,7 +14,7 @@ function DailyLogMemo({ date, initMemo = '' }: DailyLogMemoProps) {
   const [memo, setMemo] = useState(initMemo);
   const [isEditable, setIsEditable] = useState(false);
 
-  const { mutate } = useSetDailyLogMemoByDocIdMutation();
+  const { mutate } = useSetDailyMemoByDocIdMutation();
 
   const handleChangeMemo = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setMemo(event.target.value);
