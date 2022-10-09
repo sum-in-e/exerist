@@ -1,6 +1,6 @@
 import { Box, TextareaAutosize, Typography, Divider } from '@mui/material';
 import { colorTheme } from '@styles/theme';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveAndCancelButtonGroup from '@specifics/exerist/components/SaveAndCancelButtonGroup';
 import { useSetDailyLogMemoByDocIdMutation } from '@specifics/exerist/modules/apiHooks/useSetDailyLogMemoByDocIdMutation';
@@ -12,6 +12,7 @@ interface DailyLogMemoProps {
 
 function DailyLogMemo({ date, initMemo = '' }: DailyLogMemoProps) {
   const [memo, setMemo] = useState(initMemo);
+  console.log('initMemo:', initMemo, 'memo:', memo);
   const [isEditable, setIsEditable] = useState(false);
 
   const { mutate } = useSetDailyLogMemoByDocIdMutation();
@@ -39,6 +40,10 @@ function DailyLogMemo({ date, initMemo = '' }: DailyLogMemoProps) {
     setMemo(initMemo);
     setIsEditable(false);
   };
+
+  useEffect(() => {
+    setMemo(initMemo);
+  }, [initMemo]);
 
   return (
     <Box
