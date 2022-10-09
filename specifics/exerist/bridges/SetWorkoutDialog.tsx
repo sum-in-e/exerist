@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import {
   Box,
   Dialog,
-  DialogActions,
   DialogContent,
   MenuItem,
   Select,
@@ -16,21 +15,33 @@ import { MuscleGroups, WorkoutLog } from '@common/types/workoutLogType';
 import { workoutListAll } from '@common/constants/workout';
 import SaveAndCancelButtonGroup from '@specifics/exerist/components/SaveAndCancelButtonGroup';
 import { useGetDailyLogByDocIdQuery } from '@specifics/exerist/modules/apiHooks/useGetDailyLogByDocIdQuery';
-import { useCreateWorkoutLogsByDocIdMutation } from '@specifics/exerist/modules/apiHooks/useCreateWorkoutLogsByDocIdMutation copy';
+import { useCreateWorkoutLogsByDocIdMutation } from '@specifics/exerist/modules/apiHooks/useCreateWorkoutLogsByDocIdMutation';
+import { useUpdateWorkoutLogsByDocIdMutation } from '@specifics/exerist/modules/apiHooks/useUpdateWorkoutLogsByDocIdMutation';
+import { WorkoutListAll } from '@common/types/workoutType';
 
-interface CreateWorkoutLogDialogProps {
+interface SetWorkoutDialogProps {
+  title: string;
+  type: 'createWorkout' | 'changeWorkout';
+  id?: string;
+  initMuscleGroup?: MuscleGroups;
+  initSelectedWorkout?: WorkoutListAll;
   isOpen: boolean;
   handleClose: () => void;
   date: string;
   workoutLogs: WorkoutLog[];
 }
 
-function CreateWorkoutLogDialog({
+function SetWorkoutDialog({
+  title,
+  type,
+  id,
+  initMuscleGroup,
+  initSelectedWorkout,
   isOpen,
   handleClose,
   date,
   workoutLogs,
-}: CreateWorkoutLogDialogProps) {
+}: SetWorkoutDialogProps) {
   // 여기서 id, group, name 최종 관리 해야 함. 그래야 액션으로 저장 간,ㅇ
 
   const { refetch: refetchDailyLog } = useGetDailyLogByDocIdQuery(
@@ -40,28 +51,31 @@ function CreateWorkoutLogDialog({
     { enabled: false }
   );
 
-  const { mutate } = useCreateWorkoutLogsByDocIdMutation();
+  const { mutate: createWorkoutLogsMutate } =
+    useCreateWorkoutLogsByDocIdMutation();
+
+  const { mutate: updateWorkoutLogsMutate } =
+    useUpdateWorkoutLogsByDocIdMutation();
 
   const [selectedMuscleGroup, setSelectedMuscleGroup] = useState<MuscleGroups>(
-    muscleGroups[0]
+    initMuscleGroup || muscleGroups[0]
   );
 
   const workoutListByMuscleGroup = workoutListAll[selectedMuscleGroup];
 
-  const [selectedWorkout, setSelectedWorkout] = useState(
-    workoutListByMuscleGroup[0]
+  const [selectedWorkout, setSelectedWorkout] = useState<WorkoutListAll>(
+    initSelectedWorkout || workoutListByMuscleGroup[0]
   );
 
   const handleChangeMuscleGroup = (event: SelectChangeEvent<MuscleGroups>) => {
     setSelectedMuscleGroup(event.target.value as MuscleGroups);
   };
 
-  // TODO: workoutListAll 타입 정의하면 여기 타입도 수정
-  const handleChangeWorkout = (event: SelectChangeEvent<string>) => {
-    setSelectedWorkout(event.target.value);
+  const handleChangeWorkout = (event: SelectChangeEvent<WorkoutListAll>) => {
+    setSelectedWorkout(event.target.value as WorkoutListAll);
   };
 
-  const handleClickAdd = () => {
+  const handleCreate = () => {
     const newWorkoutLog = {
       id: `${dayjs()}_${uuid()}`,
       group: selectedMuscleGroup,
@@ -72,7 +86,7 @@ function CreateWorkoutLogDialog({
     const copiedWorkoutLogs = [...workoutLogs];
     copiedWorkoutLogs.push(newWorkoutLog);
 
-    mutate(
+    createWorkoutLogsMutate(
       { docId: date, workoutLogsData: copiedWorkoutLogs },
       {
         onSuccess: () => {
@@ -83,19 +97,73 @@ function CreateWorkoutLogDialog({
     );
   };
 
+  const handleUpdate = () => {
+    const copiedWorkoutLogs = [...workoutLogs];
+    const modifiedLogIndex = copiedWorkoutLogs.findIndex(
+      (log) => log.id === id
+    );
+    if (modifiedLogIndex !== -1) {
+      const { id, group, name, memo } = copiedWorkoutLogs[modifiedLogIndex];
+
+      if (group !== selectedMuscleGroup || name !== selectedWorkout) {
+        copiedWorkoutLogs.splice(modifiedLogIndex, 1, {
+          id,
+          group: selectedMuscleGroup,
+          name: selectedWorkout,
+          memo,
+        });
+
+        updateWorkoutLogsMutate(
+          {
+            docId: date,
+            workoutLogsData: copiedWorkoutLogs,
+          },
+          {
+            onSuccess: () => {
+              refetchDailyLog();
+              handleClose();
+            },
+          }
+        );
+      }
+    } else {
+      alert('수정하고자하는 운동을 찾지 못 했습니다.');
+      handleClose();
+    }
+  };
+
+  const handleClickSave = () => {
+    if (type === 'createWorkout') {
+      handleCreate();
+    }
+    if (type === 'changeWorkout') {
+      handleUpdate();
+    }
+  };
+
   const handleClickCancel = () => {
     handleClose();
   };
 
   useEffect(() => {
+    // initSelectWorkout을 보여줘야 하는 경우를 예외 케이스로 걸고
+    if (
+      initMuscleGroup &&
+      initMuscleGroup === selectedMuscleGroup &&
+      initSelectedWorkout
+    ) {
+      setSelectedWorkout(initSelectedWorkout);
+      return;
+    }
+    // 나머지를 리스트의 0번째 운동 보여주는 걸로 해야함
     setSelectedWorkout(workoutListByMuscleGroup[0]);
-  }, [workoutListByMuscleGroup]);
+  }, [workoutListByMuscleGroup, initSelectedWorkout]);
 
   return (
     <Dialog open={isOpen} fullWidth>
       <Box p="20px 24px 0 24px" textAlign="center">
         <Typography variant="h6" fontWeight="bold">
-          운동 추가
+          {title}
         </Typography>
       </Box>
       <DialogContent>
@@ -150,7 +218,7 @@ function CreateWorkoutLogDialog({
       {/* Dialog Actions */}
       <Box p="0 24px 20px 24px" width="100%">
         <SaveAndCancelButtonGroup
-          handleClickSave={handleClickAdd}
+          handleClickSave={handleClickSave}
           handleClickCancel={handleClickCancel}
         />
       </Box>
@@ -158,4 +226,4 @@ function CreateWorkoutLogDialog({
   );
 }
 
-export default CreateWorkoutLogDialog;
+export default SetWorkoutDialog;

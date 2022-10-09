@@ -3,7 +3,7 @@ import { useGetDailyLogByDocIdQuery } from '@specifics/exerist/modules/apiHooks/
 import WorkoutLogs from '@specifics/exerist/bridges/workoutLogs';
 import { colorTheme } from '@styles/theme';
 import DailyLogMemo from './dailyLogMemo';
-import CreateWorkoutLogDialog from '@specifics/exerist/bridges/workoutLogs/createWorkoutLogDialog';
+import SetWorkoutDialog from '@specifics/exerist/bridges/SetWorkoutDialog';
 import { useState } from 'react';
 
 interface DailyLogProps {
@@ -65,7 +65,9 @@ function DailyLog({ date }: DailyLogProps) {
 
       {/* 운동 추가 다이얼로그 */}
       {isOpen && (
-        <CreateWorkoutLogDialog
+        <SetWorkoutDialog
+          type="createWorkout"
+          title="운동 추가"
           isOpen={isOpen}
           handleClose={handleCloseDialog}
           date={date}
