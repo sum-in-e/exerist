@@ -61,8 +61,11 @@ function SetWorkoutDialog({
     initMuscleGroup || muscleGroups[0]
   );
 
-  const workoutListByMuscleGroup = workoutListAll[selectedMuscleGroup];
+  const workoutListByMuscleGroup = [
+    ...workoutListAll[selectedMuscleGroup],
+  ].sort();
 
+  console.log(workoutListByMuscleGroup);
   const [selectedWorkout, setSelectedWorkout] = useState<WorkoutListAll>(
     initSelectedWorkout || workoutListByMuscleGroup[0]
   );

@@ -52,6 +52,7 @@ export const workoutListAll = {
     '케이블 푸쉬 다운',
     '오버헤드 트라이셉스 익스텐션',
     '벤치 딥스',
+    '프리쳐컬',
   ] as const,
   Core: ['행잉 레그레이즈', '케이블 크런치', '크런치 머신'] as const,
 };
