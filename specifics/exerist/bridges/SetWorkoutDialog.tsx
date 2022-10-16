@@ -81,7 +81,7 @@ function SetWorkoutDialog({
   const handleChangeWorkout = (event: SelectChangeEvent<WorkoutListAll>) => {
     setSelectedWorkout(event.target.value as WorkoutListAll);
   };
-  console.log('render');
+
   const handleCreate = () => {
     const newWorkoutLog = {
       id: `${dayjs()}_${uuid()}`,
