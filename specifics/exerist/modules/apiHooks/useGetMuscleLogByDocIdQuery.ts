@@ -2,15 +2,15 @@ import { queryKeys } from '@common/modules/queryKeys';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { FirebaseError } from 'firebase/app';
 import { DocumentData } from 'firebase/firestore';
-import dailyLog, { GetDailyLogByDocIdParmas } from '../api/dailyLog';
+import muscleLog, { GetMuscleLogByDocIdParmas } from '../api/muscleLog';
 
-export const useGetDailyLogByDocIdQuery = (
-  params: GetDailyLogByDocIdParmas,
+export const useGetMuscleLogByDocIdQuery = (
+  params: GetMuscleLogByDocIdParmas,
   options?: UseQueryOptions<DocumentData, FirebaseError, DocumentData>
 ) => {
   return useQuery<DocumentData, FirebaseError, DocumentData>(
-    queryKeys.getDailyLogByDocId(params),
-    () => dailyLog.getDailyLogByDocId(params),
+    queryKeys.getMuscleLogByDocId(params),
+    () => muscleLog.getMuscleLogByDocId(params),
     {
       ...options,
     }

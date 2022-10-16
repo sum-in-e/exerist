@@ -11,7 +11,7 @@ export const useGetDailyMemoByDocIdQuery = (
   options?: UseQueryOptions<DocumentData, FirebaseError, DocumentData>
 ) => {
   return useQuery<DocumentData, FirebaseError, DocumentData>(
-    queryKeys.getDaiyMemoByDocId(params),
+    queryKeys.getDailyMemoByDocId(params),
     () => dailyMemo.getDailyMemoyDocId(params),
     {
       ...options,

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Box, TextField } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers';
+import RenderDay from './RenderDay';
 
 function Calendar() {
   const router = useRouter();
@@ -47,6 +48,14 @@ function Calendar() {
           onAccept={handleAccept}
           onChange={handleChange}
           renderInput={(params) => <TextField fullWidth {...params} />}
+          renderDay={(day, _value, DayComponentProps) => {
+            return (
+              <RenderDay
+                date={dayjs(day).format('YYYY-MM-DD')}
+                DayComponentProps={DayComponentProps}
+              />
+            );
+          }}
         />
       </LocalizationProvider>
     </Box>
