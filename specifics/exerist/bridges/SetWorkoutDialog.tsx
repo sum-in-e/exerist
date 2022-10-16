@@ -65,19 +65,23 @@ function SetWorkoutDialog({
     ...workoutListAll[selectedMuscleGroup],
   ].sort();
 
-  console.log(workoutListByMuscleGroup);
   const [selectedWorkout, setSelectedWorkout] = useState<WorkoutListAll>(
     initSelectedWorkout || workoutListByMuscleGroup[0]
   );
 
   const handleChangeMuscleGroup = (event: SelectChangeEvent<MuscleGroups>) => {
+    const newWorkoutListByMuscleGroup = [
+      ...workoutListAll[event.target.value as MuscleGroups],
+    ].sort();
+
     setSelectedMuscleGroup(event.target.value as MuscleGroups);
+    setSelectedWorkout(newWorkoutListByMuscleGroup[0]);
   };
 
   const handleChangeWorkout = (event: SelectChangeEvent<WorkoutListAll>) => {
     setSelectedWorkout(event.target.value as WorkoutListAll);
   };
-
+  console.log('render');
   const handleCreate = () => {
     const newWorkoutLog = {
       id: `${dayjs()}_${uuid()}`,
@@ -147,20 +151,6 @@ function SetWorkoutDialog({
   const handleClickCancel = () => {
     handleClose();
   };
-
-  useEffect(() => {
-    // initSelectWorkout을 보여줘야 하는 경우를 예외 케이스로 걸고
-    if (
-      initMuscleGroup &&
-      initMuscleGroup === selectedMuscleGroup &&
-      initSelectedWorkout
-    ) {
-      setSelectedWorkout(initSelectedWorkout);
-      return;
-    }
-    // 나머지를 리스트의 0번째 운동 보여주는 걸로 해야함
-    setSelectedWorkout(workoutListByMuscleGroup[0]);
-  }, [workoutListByMuscleGroup, initSelectedWorkout]);
 
   return (
     <Dialog open={isOpen} fullWidth>
