@@ -9,7 +9,7 @@ export const useGetDailyLogByDocIdQuery = (
   options?: UseQueryOptions<DocumentData, FirebaseError, DocumentData>
 ) => {
   return useQuery<DocumentData, FirebaseError, DocumentData>(
-    queryKeys.getDaiyLogByDocId(params),
+    queryKeys.getDailyLogByDocId(params),
     () => dailyLog.getDailyLogByDocId(params),
     {
       ...options,
