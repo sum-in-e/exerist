@@ -1,5 +1,5 @@
 import { Box, Button } from '@mui/material';
-import Calendar from '@specifics/exerist/bridges/Calendar';
+import Calendar from '@specifics/exerist/bridges/calendar';
 import DailyLog from '@specifics/exerist/bridges/dailyLog';
 import { useRouter } from 'next/router';
 
