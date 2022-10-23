@@ -1,6 +1,7 @@
 import { Badge, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { PickersDay, PickersDayProps } from '@mui/x-date-pickers';
+import { MuscleGroups } from '@common/types/workoutLogType';
 import { useGetMuscleLogByDocIdQuery } from '@specifics/exerist/modules/apiHooks/useGetMuscleLogByDocIdQuery';
 
 interface RenderDayProps {
@@ -14,6 +15,13 @@ function RenderDay({ date, DayComponentProps }: RenderDayProps) {
   });
 
   const muscleLog = data?.muscleLog || undefined;
+  const renderedText = muscleLog
+    ? muscleLog
+        .map((muscle: MuscleGroups) => {
+          return muscle.substring(0, 1);
+        })
+        .join()
+    : '';
 
   return muscleLog ? (
     <Badge
@@ -27,7 +35,7 @@ function RenderDay({ date, DayComponentProps }: RenderDayProps) {
           p="0 3px"
         >
           <Typography variant="caption" color="white">
-            {muscleLog ? muscleLog.join() : ''}
+            {renderedText}
           </Typography>
         </Box>
       }
