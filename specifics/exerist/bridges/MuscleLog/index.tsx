@@ -68,7 +68,17 @@ function MuscleLog({ date }: MuscleLogProps) {
       ) : (
         <Box>
           <Typography fontWeight="bold">오늘의 운동 부위</Typography>
-          <Box display="flex" gap={2} mt={1}>
+          <Box
+            display="flex"
+            overflow="scroll"
+            gap={1}
+            mt={1}
+            sx={{
+              '::-webkit-scrollbar': {
+                display: 'none',
+              },
+            }}
+          >
             {MUSCLE_GROUPS_FOR_MUSCLE_LOG.map((muscleGroup) => {
               return (
                 <MuscleChip

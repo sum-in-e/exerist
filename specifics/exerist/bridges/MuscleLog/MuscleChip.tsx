@@ -17,16 +17,19 @@ function MuscleChip({
     handleClickMuscleGroup(muscleGroup);
   };
 
+  const bgColor = isIncluded ? colorTheme.signature : colorTheme.secondary;
+
   return (
     <Chip
       onClick={handleClick}
       label={muscleGroup}
       sx={{
-        backgroundColor: isIncluded
-          ? colorTheme.signature
-          : colorTheme.secondary,
+        backgroundColor: bgColor,
         color: isIncluded ? colorTheme.white : colorTheme.main,
         cursor: 'pointer',
+        ':hover': {
+          backgroundColor: bgColor,
+        },
       }}
     />
   );
