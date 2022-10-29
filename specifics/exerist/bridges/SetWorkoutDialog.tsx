@@ -190,13 +190,12 @@ function SetWorkoutDialog({
               종목
             </Typography>
           </Box>
-          <Box width="80%">
+          <Box width="85%">
             <Select
               value={selectedWorkout}
               onChange={handleChangeWorkout}
               size="small"
               fullWidth
-              sx={{ maxWidth: '100%' }}
             >
               {workoutListByMuscleGroup.map((workout: any, index: any) => (
                 <MenuItem key={`${workout}_${index}`} value={workout}>
