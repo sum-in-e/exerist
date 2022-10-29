@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { v4 as uuid } from 'uuid';
 import dayjs from 'dayjs';
-import { muscleGroups } from '@common/constants/exerist';
+import { MUSCLE_GROUPS } from '@common/constants/muscleGroups';
 import { MuscleGroups, WorkoutLog } from '@common/types/workoutLogType';
 import { workoutListAll } from '@common/constants/workout';
 import SaveAndCancelButtonGroup from '@specifics/exerist/components/SaveAndCancelButtonGroup';
@@ -58,7 +58,7 @@ function SetWorkoutDialog({
     useUpdateWorkoutLogsByDocIdMutation();
 
   const [selectedMuscleGroup, setSelectedMuscleGroup] = useState<MuscleGroups>(
-    initMuscleGroup || muscleGroups[0]
+    initMuscleGroup || MUSCLE_GROUPS[0]
   );
 
   const workoutListByMuscleGroup = [
@@ -174,7 +174,7 @@ function SetWorkoutDialog({
               fullWidth
               size="small"
             >
-              {muscleGroups.map((group, index) => (
+              {MUSCLE_GROUPS.map((group, index) => (
                 <MenuItem key={`${group}_${index}`} value={group}>
                   {group}
                 </MenuItem>

@@ -1,10 +1,11 @@
 import { Box, Button, Typography } from '@mui/material';
+import { useState } from 'react';
+import { colorTheme } from '@styles/theme';
 import { useGetDailyLogByDocIdQuery } from '@specifics/exerist/modules/apiHooks/useGetDailyLogByDocIdQuery';
 import WorkoutLogs from '@specifics/exerist/bridges/workoutLogs';
-import { colorTheme } from '@styles/theme';
 import DailyLogMemo from './dailyLogMemo';
 import SetWorkoutDialog from '@specifics/exerist/bridges/SetWorkoutDialog';
-import { useState } from 'react';
+import MuscleLog from '@specifics/exerist/bridges/MuscleLog';
 
 interface DailyLogProps {
   date: string;
@@ -28,7 +29,11 @@ function DailyLog({ date }: DailyLogProps) {
 
   return (
     <Box>
+      {/* muscleLog */}
+      <MuscleLog date={date} />
+
       {/* dailyLog memo */}
+      {/* TODO: DailyLogMemo -> DailyMemo로 바꾸고 디렉토리 구조 변경 */}
       {<DailyLogMemo date={date} />}
 
       {/* workoutLogs */}
