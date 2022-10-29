@@ -6,11 +6,11 @@ import SaveAndCancelButtonGroup from '@specifics/exerist/components/SaveAndCance
 import { useSetDailyMemoByDocIdMutation } from '@common/modules/apiHooks/useSetDailyMemoByDocIdMutation';
 import { useGetDailyMemoByDocIdQuery } from '@common/modules/apiHooks/useGetDailyMemoByDocIdQuery';
 
-interface DailyLogMemoProps {
+interface DailyMemoProps {
   date: string;
 }
 
-function DailyLogMemo({ date }: DailyLogMemoProps) {
+function DailyMemo({ date }: DailyMemoProps) {
   const { data, refetch } = useGetDailyMemoByDocIdQuery({
     docId: date,
   });
@@ -103,4 +103,4 @@ function DailyLogMemo({ date }: DailyLogMemoProps) {
   );
 }
 
-export default DailyLogMemo;
+export default DailyMemo;

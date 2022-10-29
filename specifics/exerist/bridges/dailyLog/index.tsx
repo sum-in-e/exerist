@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { colorTheme } from '@styles/theme';
 import { useGetDailyLogByDocIdQuery } from '@specifics/exerist/modules/apiHooks/useGetDailyLogByDocIdQuery';
 import WorkoutLogs from '@specifics/exerist/bridges/workoutLogs';
-import DailyLogMemo from './dailyLogMemo';
 import SetWorkoutDialog from '@specifics/exerist/bridges/SetWorkoutDialog';
 import MuscleLog from '@specifics/exerist/bridges/MuscleLog';
+import DailyMemo from '@specifics/exerist/bridges/dailyMemo';
 
 interface DailyLogProps {
   date: string;
@@ -33,8 +33,7 @@ function DailyLog({ date }: DailyLogProps) {
       <MuscleLog date={date} />
 
       {/* dailyLog memo */}
-      {/* TODO: DailyLogMemo -> DailyMemo로 바꾸고 디렉토리 구조 변경 */}
-      {<DailyLogMemo date={date} />}
+      {<DailyMemo date={date} />}
 
       {/* workoutLogs */}
       {!isLoading &&
