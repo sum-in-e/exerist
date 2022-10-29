@@ -63,34 +63,28 @@ function MuscleLog({ date }: MuscleLogProps) {
       borderRadius="5px"
       sx={{ boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px' }}
     >
-      {isLoading ? (
-        <Skeleton width="100%" height="50px" />
-      ) : (
-        <Box>
-          <Typography fontWeight="bold">오늘의 운동 부위</Typography>
-          <Box
-            display="flex"
-            overflow="scroll"
-            gap={1}
-            mt={1}
-            sx={{
-              '::-webkit-scrollbar': {
-                display: 'none',
-              },
-            }}
-          >
-            {MUSCLE_GROUPS_FOR_MUSCLE_LOG.map((muscleGroup) => {
-              return (
-                <MuscleChip
-                  muscleGroup={muscleGroup}
-                  isIncluded={selectedGroups.includes(muscleGroup as never)}
-                  handleClickMuscleGroup={handleClickMuscleGroup}
-                />
-              );
-            })}
-          </Box>
-        </Box>
-      )}
+      <Typography fontWeight="bold">오늘의 운동 부위</Typography>
+      <Box
+        display="flex"
+        overflow="scroll"
+        gap={1}
+        mt={1}
+        sx={{
+          '::-webkit-scrollbar': {
+            display: 'none',
+          },
+        }}
+      >
+        {MUSCLE_GROUPS_FOR_MUSCLE_LOG.map((muscleGroup) => {
+          return (
+            <MuscleChip
+              muscleGroup={muscleGroup}
+              isIncluded={selectedGroups.includes(muscleGroup as never)}
+              handleClickMuscleGroup={handleClickMuscleGroup}
+            />
+          );
+        })}
+      </Box>
     </Box>
   );
 }
