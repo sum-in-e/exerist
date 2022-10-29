@@ -27,6 +27,11 @@ function MuscleChip({
           : colorTheme.secondary,
         color: isIncluded ? colorTheme.white : colorTheme.main,
         cursor: 'pointer',
+        ':hover': {
+          backgroundColor: isIncluded
+            ? colorTheme.signature
+            : colorTheme.secondary,
+        },
       }}
     />
   );
