@@ -5,7 +5,7 @@ import { useGetDailyLogByDocIdQuery } from '@specifics/exerist/modules/apiHooks/
 import WorkoutLogs from '@specifics/exerist/bridges/workoutLogs';
 import SetWorkoutDialog from '@specifics/exerist/bridges/SetWorkoutDialog';
 import MuscleLog from '@specifics/exerist/bridges/MuscleLog';
-import DailyMemo from '@specifics/exerist/bridges/dailyMemo';
+import DailyMemo from '@specifics/exerist/bridges/DDDD';
 
 interface DailyLogProps {
   date: string;
