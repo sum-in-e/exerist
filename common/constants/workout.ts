@@ -29,6 +29,8 @@ export const workoutListAll = {
     '라잉 레그컬',
     '시티드 레그컬',
     '힙어브덕션',
+    '바벨 런지',
+    '싱글 레그프레스',
   ] as const,
   Shoulder: [
     '덤벨 숄더프레스',
@@ -42,6 +44,7 @@ export const workoutListAll = {
     '벤트 오버 레터럴 레이즈',
     '리어 델트 플라이 머신',
     '페이스풀',
+    '케이블 싱글 사이드 레터럴 레이즈',
   ] as const,
   Arm: [
     '바벨컬',
