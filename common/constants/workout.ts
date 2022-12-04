@@ -7,6 +7,7 @@ export const workoutListAll = {
     '체스트 프레스 머신',
     '인클라인 체스트 프레스 머신',
     '체스트 플라이 머신',
+    '케이블 플라이',
     '딥스',
   ] as const,
   Back: [
@@ -16,6 +17,7 @@ export const workoutListAll = {
     '시티드로우 머신',
     '실로우',
     '랫풀다운',
+    '랫풀다운 머신',
     '풀업',
     '케이블 풀오버',
   ] as const,
@@ -56,6 +58,7 @@ export const workoutListAll = {
     '오버헤드 트라이셉스 익스텐션',
     '벤치 딥스',
     '프리쳐컬',
+    '트라이셉스 프레스 머신',
   ] as const,
   Core: ['행잉 레그레이즈', '케이블 크런치', '크런치 머신'] as const,
 };
