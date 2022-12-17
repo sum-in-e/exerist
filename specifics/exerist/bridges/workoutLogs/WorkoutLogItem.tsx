@@ -201,11 +201,10 @@ function WorkoutLogItem({
             <TextareaAutosize
               minRows={4}
               maxRows={6}
-              aria-label="maximum height"
               placeholder="내용을 입력해 주세요."
               value={currentMemo}
               onChange={handleChangeMemo}
-              style={{ width: '100%', fontSize: '16px' }}
+              style={{ width: '100%', fontSize: '16px', resize: 'none' }}
             />
           ) : (
             <Typography

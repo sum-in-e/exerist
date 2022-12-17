@@ -82,7 +82,12 @@ function DailyMemo({ date }: DailyMemoProps) {
             placeholder="내용을 입력해 주세요."
             value={memo}
             onChange={handleChangeMemo}
-            style={{ width: '100%', marginBottom: '16px', fontSize: '16px' }}
+            style={{
+              width: '100%',
+              marginBottom: '16px',
+              fontSize: '16px',
+              resize: 'none',
+            }}
           />
           <SaveAndCancelButtonGroup
             handleClickSave={handleClickSave}
